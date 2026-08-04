@@ -19,8 +19,9 @@ jobs:
 
       - name: Run stack (app + postgres)
         run: |
-          export VAULT_TOKEN=root
+          export VAULT_TOKEN=${{ secrets.VAULT_TOKEN }}
           docker compose -f docker-compose.yaml up -d
+
       - name: Wait for backend to be healthy
         run: |
           for i in {1..15}; do
@@ -31,7 +32,6 @@ jobs:
       - name: Run tests
         run: docker compose -f docker-compose.yaml exec -T backend pytest
 
-      
       - name: Tear down (optional, if you don't want it left running)
         if: always()
         run: docker compose -f docker-compose.yaml down
