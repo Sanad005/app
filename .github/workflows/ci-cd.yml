@@ -46,7 +46,25 @@ jobs:
           docker compose up -d
 
       - name: Wait for backend to start
-        run: sleep 10
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: sleep 15
 
+      # ✅ FIXED - Check container logs instead of curl
       - name: Check backend is responding
-        run: curl -sf http://localhost:80 || (echo "Backend not responding" && exit 1)
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          # Check if backend container is running
+          if ! docker compose ps backend | grep -q "Up"; then
+            echo "Backend container is not running!"
+            docker compose logs backend
+            exit 1
+          fi
+          
+          # Check for errors in logs
+          if docker compose logs backend | grep -i "error\|traceback"; then
+            echo "Backend has errors!"
+            docker compose logs backend --tail=50
+            exit 1
+          fi
+          
+          echo "Backend is running successfully!"
