@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 env:
-  IMAGE_NAME: ghcr.io/Sanad005/app-backend
+  IMAGE_NAME: ghcr.io/sanad005/app-backend
   PROJECT_DIR: /home/aau/Desktop/project2/app
 
 permissions:
