@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from Expense_Tracker.backend.app.main import (
+from app.backend.app.main import (
     check_if_exist,
     insert_user,
     insert_category,
