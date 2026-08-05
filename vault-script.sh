@@ -3,7 +3,7 @@
 VAULT_ADDR='http://127.0.0.1:8200'  # Update with your Vault address
 VAULT_TOKEN='root'       # Update with your Vault token
 SECRET_PATH='secret/taskapp'      # Update with your secret path
-ENV_FILE='.env'                      # Name of the .env file
+ENV_FILE='/home/aau/Desktop/project2/app/.env'                      # Name of the .env file
 # Export Vault address and token
 export VAULT_ADDR
 export VAULT_TOKEN
