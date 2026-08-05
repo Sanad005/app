@@ -1,0 +1,52 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+
+env:
+  IMAGE_NAME: ghcr.io/Sanad005/app-backend
+  PROJECT_DIR: /home/aau/Desktop/project2/app
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build backend image
+        run: docker build -t $IMAGE_NAME:latest -f backend/dockerfile backend
+
+      - name: Push image to GHCR
+        run: docker push $IMAGE_NAME:latest
+
+      - name: Sync vault script to compose project
+        run: cp vault-script.sh "$PROJECT_DIR/vault-script.sh"
+
+      - name: Fetch secrets from Vault
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          chmod +x vault-script.sh
+          ./vault-script.sh
+
+      - name: Pull latest image and restart containers
+        working-directory: ${{ env.PROJECT_DIR }}
+        run: |
+          docker compose pull
+          docker compose down
+          docker compose up -d
+
+      - name: Wait for backend to start
+        run: sleep 10
+
+      - name: Check backend is responding
+        run: curl -sf http://localhost:80 || (echo "Backend not responding" && exit 1)
