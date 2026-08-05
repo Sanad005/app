@@ -3,16 +3,16 @@ FROM python:3.11-slim
 WORKDIR /app
 
 
-COPY backend/requirements.txt backend/requirements.txt
-RUN pip install --no-cache-dir -r backend/requirements.txt gunicorn python-dotenv
+COPY backend/requirements.txt Expense_Tracker/backend/requirements.txt
+RUN pip install --no-cache-dir -r Expense_Tracker/backend/requirements.txt gunicorn python-dotenv
 
 
 
-COPY backend backend
+COPY backend Expense_Tracker/backend
 
 
-COPY frontend/templates backend/templates
-COPY frontend/static backend/static
+COPY frontend/templates Expense_Tracker/backend/templates
+COPY frontend/static Expense_Tracker/backend/static
 
 ENV PYTHONPATH=/app \
     PYTHONUNBUFFERED=1 \
@@ -20,4 +20,4 @@ ENV PYTHONPATH=/app \
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--preload", "app.backend.server:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--preload", "Expense_Tracker.backend.server:app"]
