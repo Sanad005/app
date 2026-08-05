@@ -1,5 +1,5 @@
-from Expense_Tracker.backend.app.db import engine
-from Expense_Tracker.backend.app.models import metadata, users, categories, expenses
+from app.db import engine
+from app.models import metadata, users, categories, expenses
 from sqlalchemy import Float, extract, insert, select, text, update, delete, func, and_,cast
 from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime
