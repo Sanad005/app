@@ -1,21 +1,9 @@
-import os
-from flask import Flask, render_template, request, redirect, url_for, session
-from app.backend.app.main import (
-    check_if_exist,
-    insert_user,
-    insert_category,
-    get_categories_by_user,
-    get_category_summary,
-    insert_expense,
-    get_expenses_by_user,
-    get_expense_by_id,
-    update_expense,
-    delete_expense,
-    search_expenses,
-    delete_category,
-    get_budget_summary
-    
-)
+from app.main import create_app
+
+app = create_app()
+
+if __name__ == "__main__":
+    app.run(debug=False)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__)) 
 FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
