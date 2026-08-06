@@ -1,16 +1,22 @@
-from app.main import create_app
+from flask import Flask, render_template, request, redirect, url_for, session
+from Expense_Tracker.backend.app.main import (
+    check_if_exist,
+    insert_user,
+    insert_category,
+    get_categories_by_user,
+    get_category_summary,
+    insert_expense,
+    get_expenses_by_user,
+    get_expense_by_id,
+    update_expense,
+    delete_expense,
+    search_expenses,
+    delete_category,
+    get_budget_summary
+    
+)
 
-app = create_app()
-if __name__ == "__main__":
-    app.run(debug=False)
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__)) 
-FRONTEND_DIR = os.path.join(BASE_DIR, "..", "frontend")
-
-app = Flask(__name__,
-    template_folder=os.path.join(FRONTEND_DIR, "templates"),
-    static_folder=os.path.join(FRONTEND_DIR, "static"))
-
+app = Flask(__name__)
 app.secret_key = "dev-secret-change-me"
 
 
