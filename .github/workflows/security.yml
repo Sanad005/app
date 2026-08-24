@@ -37,7 +37,13 @@ jobs:
       - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
-          dockerfile: dockerfile
+          dockerfile: backend/dockerfile
+          output-file: hadolint-report.txt
+          no-fail: true
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: frontend/dockerfile
           output-file: hadolint-report.txt
           no-fail: true
 
