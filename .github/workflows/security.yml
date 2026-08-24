@@ -1,0 +1,39 @@
+name: Security Scans
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  security:
+    runs-on: self-hosted   # uses your local runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # 1) Bandit - Python security linter
+      - name: Run Bandit
+        run: |
+          pip install bandit
+          bandit -r . -x ./venv,./node_modules -f screen
+
+      # 2) TruffleHog - secrets scanning
+      - name: Run TruffleHog
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          extra_args: --only-verified
+
+      # 3) Hadolint - Dockerfile linter
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
